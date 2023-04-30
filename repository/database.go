@@ -12,9 +12,9 @@ var DB *sql.DB
 var closed bool = true
 
 const (
-	user     = "postgres"
-	password = "root.seyit122"
-	dbname   = "ekinoksgcc"
+	user     = "ekinoks"
+	password = "ekinoksgccdb"
+	dbname   = "ekinoksdb"
 )
 
 func InitDB() {
