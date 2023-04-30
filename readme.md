@@ -11,6 +11,8 @@ Endpoints:
 \- List customer orders with details.  
 \- Login/Register/Logout.
 
+Please see `main.go`for all endpoints.
+
 # To Run With Docker
 
 To run through Docker Compose, run `docker-compose up` command in the project's root directory.
