@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: ekinoksapp
+    restart: unless-stopped
+    image: ekinoksgccimg
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - POSTGRES_USER=ekinoks
+      - POSTGRES_PASSWORD=ekinoksgccdb
+      - POSTGRES_DB=ekinoksdb
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5432
+      - DEBIAN_FRONTEND=noninteractive
+      - TZ=Europe/Istanbul
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+    command: "./main"
