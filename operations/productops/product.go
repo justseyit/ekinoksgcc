@@ -15,7 +15,7 @@ func AddProductToDB(product model.Product) (int, error) {
 	var id int
 	err := repository.DB.QueryRow("INSERT INTO product(productName, productPrice, productDescription) VALUES($1, $2, $3) RETURNING productID", product.ProductName, product.ProductPrice, product.ProductDescription).Scan(&id)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return id, err
 }
@@ -24,7 +24,7 @@ func AddProductToDB(product model.Product) (int, error) {
 func UpdateProductInDB(product model.Product) (int, error) {
 	_, err := repository.DB.Exec("UPDATE product SET productName=$1, productPrice=$2, productDescription=$3 WHERE productID=$4", product.ProductName, product.ProductPrice, product.ProductDescription, product.ProductID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return product.ProductID, err
 }
@@ -33,7 +33,7 @@ func UpdateProductInDB(product model.Product) (int, error) {
 func DeleteProductFromDB(productID int) (int, error) {
 	_, err := repository.DB.Exec("DELETE FROM product WHERE productID=$1", productID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return productID, err
 }
@@ -43,7 +43,7 @@ func GetProductByProductIDFromDB(productID int) (model.Product, error) {
 	var product model.Product
 	err := repository.DB.QueryRow("SELECT productID, productName, productPrice, productDescription FROM product WHERE productID=$1", productID).Scan(&product.ProductID, &product.ProductName, &product.ProductPrice, &product.ProductDescription)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return product, err
 }
@@ -54,7 +54,7 @@ func GetProductsByIDsFromDB(productIDs []int) ([]model.Product, error) {
 	for _, productID := range productIDs {
 		product, err := GetProductByProductIDFromDB(productID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 			return products, err
 		}
 		products = append(products, product)
@@ -67,7 +67,7 @@ func GetAllProductsFromDB() ([]model.Product, error) {
 	products := []model.Product{}
 	rows, err := repository.DB.Query("SELECT productID, productName, productPrice, productDescription FROM product")
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return products, err
 	}
 	defer rows.Close()
@@ -75,14 +75,14 @@ func GetAllProductsFromDB() ([]model.Product, error) {
 		var product model.Product
 		err := rows.Scan(&product.ProductID, &product.ProductName, &product.ProductPrice, &product.ProductDescription)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 			return products, err
 		}
 		products = append(products, product)
 	}
 	err = rows.Err()
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return products, err
 	}
 	return products, nil
@@ -92,7 +92,7 @@ func GetAddedProductMappingsByUserIDFromDB(userID int) ([]model.AddedProduct, er
 	addedProducts := []model.AddedProduct{}
 	rows, err := repository.DB.Query("SELECT addedProductID, userID, productID FROM addedProduct WHERE userID=$1", userID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return addedProducts, err
 	}
 	defer rows.Close()
@@ -100,14 +100,14 @@ func GetAddedProductMappingsByUserIDFromDB(userID int) ([]model.AddedProduct, er
 		var addedProduct model.AddedProduct
 		err := rows.Scan(&addedProduct.ProductID, &addedProduct.UserID, &addedProduct.AddedProductID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 			return addedProducts, err
 		}
 		addedProducts = append(addedProducts, addedProduct)
 	}
 	err = rows.Err()
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return addedProducts, err
 	}
 	return addedProducts, nil
@@ -117,7 +117,7 @@ func GetAddedProductMappingByProductIDFromDB(productID int) (model.AddedProduct,
 	var addedProduct model.AddedProduct
 	err := repository.DB.QueryRow("SELECT addedProductID, userID, productID FROM addedProduct WHERE productID=$1", productID).Scan(&addedProduct.ProductID, &addedProduct.UserID, &addedProduct.AddedProductID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return addedProduct, err
 }
@@ -126,7 +126,7 @@ func GetAddedProductMappingByAddedProductMappingIDFromDB(addedProductID int) (mo
 	var addedProduct model.AddedProduct
 	err := repository.DB.QueryRow("SELECT addedProductID, userID, productID FROM addedProduct WHERE addedProductID=$1", addedProductID).Scan(&addedProduct.ProductID, &addedProduct.UserID, &addedProduct.AddedProductID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return addedProduct, err
 }
@@ -135,7 +135,7 @@ func GetAllAddedProductMappingsFromDB() ([]model.AddedProduct, error) {
 	addedProducts := []model.AddedProduct{}
 	rows, err := repository.DB.Query("SELECT addedProductID, userID, productID FROM addedProduct")
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return addedProducts, err
 	}
 	defer rows.Close()
@@ -143,14 +143,14 @@ func GetAllAddedProductMappingsFromDB() ([]model.AddedProduct, error) {
 		var addedProduct model.AddedProduct
 		err := rows.Scan(&addedProduct.ProductID, &addedProduct.UserID, &addedProduct.AddedProductID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 			return addedProducts, err
 		}
 		addedProducts = append(addedProducts, addedProduct)
 	}
 	err = rows.Err()
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return addedProducts, err
 	}
 	return addedProducts, nil

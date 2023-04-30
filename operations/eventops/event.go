@@ -15,11 +15,11 @@ func AddOrderPlacementEventToDB(placedOrderID int) (int, int, error) {
 	var orderPlacementEventID int
 	err := repository.DB.QueryRow("INSERT INTO events(eventTimestamp) VALUES(NOW()) RETURNING eventID").Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	err1 := repository.DB.QueryRow("INSERT INTO orderPlacementEvent(eventID, placedOrderID) VALUES($1, $2) RETURNING orderPlacementEventID", eventID, placedOrderID).Scan(&orderPlacementEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	return eventID, orderPlacementEventID, err
 }
@@ -29,15 +29,15 @@ func RemoveOrderPlacementEventFromDB(orderPlacementEventID int) (int, int, error
 	var eventID int
 	err := repository.DB.QueryRow("SELECT eventID, placedOrderID FROM orderPlacementEvent WHERE orderPlacementEventID=$1", orderPlacementEventID).Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	_, err1 := repository.DB.Exec("DELETE FROM orderPlacementEvent WHERE orderPlacementEventID=$1", orderPlacementEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	_, err2 := repository.DB.Exec("DELETE FROM events WHERE eventID=$1", eventID)
 	if err2 != nil {
-		log.Fatal(err2)
+		log.Print(err2)
 	}
 	return eventID, orderPlacementEventID, err
 }
@@ -47,11 +47,11 @@ func AddUserRegisterEventToDB(userID int) (int, int, error) {
 	var eventID int
 	err := repository.DB.QueryRow("INSERT INTO events(eventTimestamp) VALUES(NOW()) RETURNING eventID").Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	err1 := repository.DB.QueryRow("INSERT INTO userRegisterEvent(eventID, userID) VALUES($1, $2) RETURNING userRegisterEventID", eventID, userID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	return eventID, userID, err
 }
@@ -61,15 +61,15 @@ func RemoveUserRegisterEventFromDB(userRegisterEventID int) (int, error) {
 	var eventID int
 	err := repository.DB.QueryRow("SELECT eventID, userID FROM userRegisterEvent WHERE userRegisterEventID=$1", userRegisterEventID).Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	_, err1 := repository.DB.Exec("DELETE FROM userRegisterEvent WHERE userRegisterEventID=$1", userRegisterEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	_, err2 := repository.DB.Exec("DELETE FROM events WHERE eventID=$1", eventID)
 	if err2 != nil {
-		log.Fatal(err2)
+		log.Print(err2)
 	}
 	return eventID, err
 }
@@ -80,11 +80,11 @@ func AddUserLoginEventToDB(userID int) (int, int, error) {
 	var userLoginEventID int
 	err := repository.DB.QueryRow("INSERT INTO events(eventTimestamp) VALUES(NOW()) RETURNING eventID").Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	err1 := repository.DB.QueryRow("INSERT INTO userLoginEvent(eventID, userID) VALUES($1, $2) RETURNING userLoginEventID", eventID, userID).Scan(&userLoginEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	return eventID, userLoginEventID, err
 }
@@ -94,15 +94,15 @@ func RemoveUserLoginEventFromDB(userLoginEventID int) (int, int, error) {
 	var eventID int
 	err := repository.DB.QueryRow("SELECT eventID, userID FROM userLoginEvent WHERE userLoginEventID=$1", userLoginEventID).Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	_, err1 := repository.DB.Exec("DELETE FROM userLoginEvent WHERE userLoginEventID=$1", userLoginEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	_, err2 := repository.DB.Exec("DELETE FROM events WHERE eventID=$1", eventID)
 	if err2 != nil {
-		log.Fatal(err2)
+		log.Print(err2)
 	}
 	return eventID, userLoginEventID, err
 }
@@ -113,11 +113,11 @@ func AddRoleAssignmentEventToDB(userRoleID int, actorUserID int) (int, int, erro
 	var roleAssignmentEventID int
 	err := repository.DB.QueryRow("INSERT INTO events(eventTimestamp) VALUES(NOW()) RETURNING eventID").Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	err1 := repository.DB.QueryRow("INSERT INTO roleAssignmentEvent(eventID, userRoleID, userID) VALUES($1, $2, $3) RETURNING roleAssignmentEventID", eventID, userRoleID, actorUserID).Scan(&roleAssignmentEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	return eventID, roleAssignmentEventID, err
 }
@@ -127,15 +127,15 @@ func RemoveRoleAssignmentEventFromDB(roleAssignmentEventID int) (int, int, error
 	var eventID int
 	err := repository.DB.QueryRow("SELECT eventID, userRoleID, userID FROM roleAssignmentEvent WHERE roleAssignmentEventID=$1", roleAssignmentEventID).Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	_, err1 := repository.DB.Exec("DELETE FROM roleAssignmentEvent WHERE roleAssignmentEventID=$1", roleAssignmentEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	_, err2 := repository.DB.Exec("DELETE FROM events WHERE eventID=$1", eventID)
 	if err2 != nil {
-		log.Fatal(err2)
+		log.Print(err2)
 	}
 	return eventID, roleAssignmentEventID, err
 }
@@ -146,11 +146,11 @@ func AddProductAddEventToDB(addedProductID int) (int, int, error) {
 	var productAddEventID int
 	err := repository.DB.QueryRow("INSERT INTO events(eventTimestamp) VALUES(NOW()) RETURNING eventID").Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	err1 := repository.DB.QueryRow("INSERT INTO productAddEvent(eventID, addedProductID) VALUES($1, $2) RETURNING productAddEventID", eventID, addedProductID).Scan(&productAddEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	return eventID, productAddEventID, err
 }
@@ -160,15 +160,15 @@ func RemoveProductAddEventFromDB(productAddEventID int) (int, int, error) {
 	var eventID int
 	err := repository.DB.QueryRow("SELECT eventID, addedProductID FROM productAddEvent WHERE productAddEventID=$1", productAddEventID).Scan(&eventID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	_, err1 := repository.DB.Exec("DELETE FROM productAddEvent WHERE productAddEventID=$1", productAddEventID)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 	}
 	_, err2 := repository.DB.Exec("DELETE FROM events WHERE eventID=$1", eventID)
 	if err2 != nil {
-		log.Fatal(err2)
+		log.Print(err2)
 	}
 	return eventID, productAddEventID, err
 }
@@ -178,7 +178,7 @@ func RemoveProductAddEventFromDB(productAddEventID int) (int, int, error) {
 func GetAllProductAddEventsFromDB() ([]*model.ProductAddEvent, error) {
 	rows, err := repository.DB.Query("SELECT productAddEventID, eventID, addedProductID FROM productAddEvent")
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	defer rows.Close()
 	var productAddEvents []*model.ProductAddEvent
@@ -186,7 +186,7 @@ func GetAllProductAddEventsFromDB() ([]*model.ProductAddEvent, error) {
 		var productAddEvent model.ProductAddEvent
 		err := rows.Scan(&productAddEvent.EventID, &productAddEvent.EventID, &productAddEvent.AddedProductID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 		productAddEvents = append(productAddEvents, &productAddEvent)
 	}
@@ -196,7 +196,7 @@ func GetAllProductAddEventsFromDB() ([]*model.ProductAddEvent, error) {
 func GetAllUserRegisterEventsFromDB() ([]*model.UserRegisterEvent, error) {
 	rows, err := repository.DB.Query("SELECT userRegisterEventID, eventID, userID FROM userRegisterEvent")
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	defer rows.Close()
 	var userRegisterEvents []*model.UserRegisterEvent
@@ -204,7 +204,7 @@ func GetAllUserRegisterEventsFromDB() ([]*model.UserRegisterEvent, error) {
 		var userRegisterEvent model.UserRegisterEvent
 		err := rows.Scan(&userRegisterEvent.EventID, &userRegisterEvent.EventID, &userRegisterEvent.UserID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 		userRegisterEvents = append(userRegisterEvents, &userRegisterEvent)
 	}
@@ -214,7 +214,7 @@ func GetAllUserRegisterEventsFromDB() ([]*model.UserRegisterEvent, error) {
 func GetAllUserLoginEventsFromDB() ([]*model.UserLoginEvent, error) {
 	rows, err := repository.DB.Query("SELECT userLoginEventID, eventID, userID FROM userLoginEvent")
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	defer rows.Close()
 	var userLoginEvents []*model.UserLoginEvent
@@ -222,7 +222,7 @@ func GetAllUserLoginEventsFromDB() ([]*model.UserLoginEvent, error) {
 		var userLoginEvent model.UserLoginEvent
 		err := rows.Scan(&userLoginEvent.EventID, &userLoginEvent.EventID, &userLoginEvent.UserID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 		userLoginEvents = append(userLoginEvents, &userLoginEvent)
 	}
@@ -232,7 +232,7 @@ func GetAllUserLoginEventsFromDB() ([]*model.UserLoginEvent, error) {
 func GetAllRoleAssignmentEventsFromDB() ([]*model.RoleAssignmentEvent, error) {
 	rows, err := repository.DB.Query("SELECT roleAssignmentEventID, eventID, userRoleID, userID FROM roleAssignmentEvent")
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	defer rows.Close()
 	var roleAssignmentEvents []*model.RoleAssignmentEvent
@@ -240,7 +240,7 @@ func GetAllRoleAssignmentEventsFromDB() ([]*model.RoleAssignmentEvent, error) {
 		var roleAssignmentEvent model.RoleAssignmentEvent
 		err := rows.Scan(&roleAssignmentEvent.EventID, &roleAssignmentEvent.EventID, &roleAssignmentEvent.UserRoleID, &roleAssignmentEvent.UserID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 		roleAssignmentEvents = append(roleAssignmentEvents, &roleAssignmentEvent)
 	}
@@ -248,9 +248,9 @@ func GetAllRoleAssignmentEventsFromDB() ([]*model.RoleAssignmentEvent, error) {
 }
 
 func GetAllOrderPlacementEventsFromDB() ([]*model.OrderPlacementEvent, error) {
-	rows, err := repository.DB.Query("SELECT orderPlacementEventID, eventID, placedOrderID FROM orderPlacementEvent")
+	rows, err := repository.DB.Query("SELECT * FROM orderPlacementEvent")
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	defer rows.Close()
 	var orderPlacementEvents []*model.OrderPlacementEvent
@@ -258,7 +258,7 @@ func GetAllOrderPlacementEventsFromDB() ([]*model.OrderPlacementEvent, error) {
 		var orderPlacementEvent model.OrderPlacementEvent
 		err := rows.Scan(&orderPlacementEvent.EventID, &orderPlacementEvent.EventID, &orderPlacementEvent.PlacedOrderID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 		orderPlacementEvents = append(orderPlacementEvents, &orderPlacementEvent)
 	}
@@ -271,13 +271,13 @@ func GetProductAddEventByEventIDFromDB(eventID int) (*model.Event, *model.Produc
 	var productAddEvent model.ProductAddEvent
 	err := repository.DB.QueryRow("SELECT productAddEventID, eventID, addedProductID FROM productAddEvent WHERE eventID=$1", eventID).Scan(&productAddEvent.EventID, &productAddEvent.EventID, &productAddEvent.AddedProductID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 
 	var event model.Event
 	err = repository.DB.QueryRow("SELECT eventID, eventTimestamp FROM events WHERE eventID=$1", productAddEvent.EventID).Scan(&event.EventID, &event.EventTimestamp)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &event, &productAddEvent, err
 }
@@ -286,13 +286,13 @@ func GetUserRegisterEventByEventIDFromDB(eventID int) (*model.Event, *model.User
 	var userRegisterEvent model.UserRegisterEvent
 	err := repository.DB.QueryRow("SELECT userRegisterEventID, eventID, userID FROM userRegisterEvent WHERE eventID=$1", eventID).Scan(&userRegisterEvent.EventID, &userRegisterEvent.EventID, &userRegisterEvent.UserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 
 	var event model.Event
 	err = repository.DB.QueryRow("SELECT eventID, eventTimestamp FROM events WHERE eventID=$1", userRegisterEvent.EventID).Scan(&event.EventID, &event.EventTimestamp)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &event, &userRegisterEvent, err
 }
@@ -301,13 +301,13 @@ func GetUserLoginEventByEventIDFromDB(eventID int) (*model.Event, *model.UserLog
 	var userLoginEvent model.UserLoginEvent
 	err := repository.DB.QueryRow("SELECT userLoginEventID, eventID, userID FROM userLoginEvent WHERE eventID=$1", eventID).Scan(&userLoginEvent.EventID, &userLoginEvent.EventID, &userLoginEvent.UserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 
 	var event model.Event
 	err = repository.DB.QueryRow("SELECT eventID, eventTimestamp FROM events WHERE eventID=$1", userLoginEvent.EventID).Scan(&event.EventID, &event.EventTimestamp)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &event, &userLoginEvent, err
 }
@@ -316,13 +316,13 @@ func GetRoleAssignmentEventByEventIDFromDB(eventID int) (*model.Event, *model.Ro
 	var roleAssignmentEvent model.RoleAssignmentEvent
 	err := repository.DB.QueryRow("SELECT roleAssignmentEventID, eventID, userRoleID, userID FROM roleAssignmentEvent WHERE eventID=$1", eventID).Scan(&roleAssignmentEvent.EventID, &roleAssignmentEvent.EventID, &roleAssignmentEvent.UserRoleID, &roleAssignmentEvent.UserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 
 	var event model.Event
 	err = repository.DB.QueryRow("SELECT eventID, eventTimestamp FROM events WHERE eventID=$1", roleAssignmentEvent.EventID).Scan(&event.EventID, &event.EventTimestamp)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &event, &roleAssignmentEvent, err
 }
@@ -331,13 +331,13 @@ func GetOrderPlacementEventByEventIDFromDB(eventID int) (*model.Event, *model.Or
 	var orderPlacementEvent model.OrderPlacementEvent
 	err := repository.DB.QueryRow("SELECT orderPlacementEventID, eventID, orderID FROM orderPlacementEvent WHERE eventID=$1", eventID).Scan(&orderPlacementEvent.EventID, &orderPlacementEvent.EventID, &orderPlacementEvent.PlacedOrderID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 
 	var event model.Event
 	err = repository.DB.QueryRow("SELECT eventID, eventTimestamp FROM events WHERE eventID=$1", orderPlacementEvent.EventID).Scan(&event.EventID, &event.EventTimestamp)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &event, &orderPlacementEvent, err
 }
@@ -345,7 +345,7 @@ func GetOrderPlacementEventByEventIDFromDB(eventID int) (*model.Event, *model.Or
 func GetProductAddEventsByUserIDFromDB(userID int) ([]*model.ProductAddEvent, error) {
 	addedProds, err := productops.GetAddedProductMappingsByUserIDFromDB(userID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return nil, err
 	}
 
@@ -354,7 +354,7 @@ func GetProductAddEventsByUserIDFromDB(userID int) ([]*model.ProductAddEvent, er
 		var productAddEvent model.ProductAddEvent
 		err := repository.DB.QueryRow("SELECT productAddEventID, eventID, addedProductID FROM productAddEvent WHERE addedProductID=$1", addedProd.AddedProductID).Scan(&productAddEvent.EventID, &productAddEvent.EventID, &productAddEvent.AddedProductID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 			return nil, err
 		}
 		productAddEvents = append(productAddEvents, &productAddEvent)
@@ -366,7 +366,7 @@ func GetUserRegisterEventByUserIDFromDB(userID int) (*model.UserRegisterEvent, e
 	var userRegisterEvent model.UserRegisterEvent
 	err := repository.DB.QueryRow("SELECT userRegisterEventID, eventID, userID FROM userRegisterEvent WHERE userID=$1", userID).Scan(&userRegisterEvent.EventID, &userRegisterEvent.EventID, &userRegisterEvent.UserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &userRegisterEvent, err
 }
@@ -374,7 +374,7 @@ func GetUserRegisterEventByUserIDFromDB(userID int) (*model.UserRegisterEvent, e
 func GetUserLoginEventsByUserIDFromDB(userID int) ([]*model.UserLoginEvent, error) {
 	rows, err := repository.DB.Query("SELECT userLoginEventID, eventID, userID FROM userLoginEvent WHERE userID=$1", userID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	defer rows.Close()
 	var userLoginEvents []*model.UserLoginEvent
@@ -382,7 +382,7 @@ func GetUserLoginEventsByUserIDFromDB(userID int) ([]*model.UserLoginEvent, erro
 		var userLoginEvent model.UserLoginEvent
 		err := rows.Scan(&userLoginEvent.EventID, &userLoginEvent.EventID, &userLoginEvent.UserID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 		userLoginEvents = append(userLoginEvents, &userLoginEvent)
 	}
@@ -392,7 +392,7 @@ func GetUserLoginEventsByUserIDFromDB(userID int) ([]*model.UserLoginEvent, erro
 func GetRoleAssignmentEventsByActorIDFromDB(actorUserID int) ([]*model.RoleAssignmentEvent, error) {
 	rows, err := repository.DB.Query("SELECT roleAssignmentEventID, eventID, userRoleID, userID FROM roleAssignmentEvent WHERE userID=$1", actorUserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	defer rows.Close()
 	var roleAssignmentEvents []*model.RoleAssignmentEvent
@@ -400,7 +400,7 @@ func GetRoleAssignmentEventsByActorIDFromDB(actorUserID int) ([]*model.RoleAssig
 		var roleAssignmentEvent model.RoleAssignmentEvent
 		err := rows.Scan(&roleAssignmentEvent.EventID, &roleAssignmentEvent.EventID, &roleAssignmentEvent.UserRoleID, &roleAssignmentEvent.UserID)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 		roleAssignmentEvents = append(roleAssignmentEvents, &roleAssignmentEvent)
 	}
@@ -412,11 +412,11 @@ func GetRoleAssignmentEventByAssignedUserIDFromDB(assignedUserID int) (*model.Ro
 	var userRole model.UserRole
 	err := repository.DB.QueryRow("SELECT userRoleID, userID, roleID FROM userRole WHERE userID=$1", assignedUserID).Scan(&userRole.UserRoleID, &userRole.UserID, &userRole.RoleID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	err = repository.DB.QueryRow("SELECT roleAssignmentEventID, eventID, userRoleID, userID FROM roleAssignmentEvent WHERE userRoleID=$1", userRole.UserRoleID).Scan(&roleAssignmentEvent.EventID, &roleAssignmentEvent.EventID, &roleAssignmentEvent.UserRoleID, &roleAssignmentEvent.UserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &roleAssignmentEvent, err
 }
@@ -427,7 +427,7 @@ func GetEventByEventID(eventID int) (*model.Event, error) {
 	var event model.Event
 	err := repository.DB.QueryRow("SELECT eventID, eventTimestamp FROM events WHERE eventID=$1", eventID).Scan(&event.EventID, &event.EventTimestamp)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &event, err
 }
@@ -436,7 +436,7 @@ func GetAddProductEventByIDFromDB(eventID int) (*model.ProductAddEvent, error) {
 	var productAddEvent model.ProductAddEvent
 	err := repository.DB.QueryRow("SELECT productAddEventID, eventID, addedProductID FROM productAddEvent WHERE productAddEventID=$1", eventID).Scan(&productAddEvent.EventID, &productAddEvent.EventID, &productAddEvent.AddedProductID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &productAddEvent, err
 }
@@ -445,7 +445,7 @@ func GetUserRegisterEventByIDFromDB(eventID int) (*model.UserRegisterEvent, erro
 	var userRegisterEvent model.UserRegisterEvent
 	err := repository.DB.QueryRow("SELECT userRegisterEventID, eventID, userID FROM userRegisterEvent WHERE userRegisterEventID=$1", eventID).Scan(&userRegisterEvent.EventID, &userRegisterEvent.EventID, &userRegisterEvent.UserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &userRegisterEvent, err
 }
@@ -454,7 +454,7 @@ func GetUserLoginEventByIDFromDB(eventID int) (*model.UserLoginEvent, error) {
 	var userLoginEvent model.UserLoginEvent
 	err := repository.DB.QueryRow("SELECT userLoginEventID, eventID, userID FROM userLoginEvent WHERE userLoginEventID=$1", eventID).Scan(&userLoginEvent.EventID, &userLoginEvent.EventID, &userLoginEvent.UserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &userLoginEvent, err
 }
@@ -463,7 +463,7 @@ func GetRoleAssignmentEventByIDFromDB(eventID int) (*model.RoleAssignmentEvent, 
 	var roleAssignmentEvent model.RoleAssignmentEvent
 	err := repository.DB.QueryRow("SELECT roleAssignmentEventID, eventID, userRoleID, userID FROM roleAssignmentEvent WHERE roleAssignmentEventID=$1", eventID).Scan(&roleAssignmentEvent.EventID, &roleAssignmentEvent.EventID, &roleAssignmentEvent.UserRoleID, &roleAssignmentEvent.UserID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &roleAssignmentEvent, err
 }
@@ -472,7 +472,7 @@ func GetOrderPlacementEventByIDFromDB(eventID int) (*model.OrderPlacementEvent, 
 	var orderPlacementEvent model.OrderPlacementEvent
 	err := repository.DB.QueryRow("SELECT orderPlacementEventID, eventID, orderID FROM orderPlacementEvent WHERE orderPlacementEventID=$1", eventID).Scan(&orderPlacementEvent.EventID, &orderPlacementEvent.EventID, &orderPlacementEvent.PlacedOrderID)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return &orderPlacementEvent, err
 }

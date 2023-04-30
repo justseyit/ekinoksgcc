@@ -12,9 +12,9 @@ var DB *sql.DB
 var closed bool = true
 
 const (
-	user     = "ekinoks"
-	password = "ekinoksgccdb"
-	dbname   = "ekinoksdb"
+	user     = "postgres"
+	password = "root.seyit122"
+	dbname   = "ekinoksgcc"
 )
 
 func InitDB() {
@@ -22,7 +22,7 @@ func InitDB() {
 		var err error
 		DB, err = sql.Open("postgres", "user="+user+" password="+password+" dbname="+dbname+" sslmode=disable")
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 		closed = false
 		log.Println("Database initialized")

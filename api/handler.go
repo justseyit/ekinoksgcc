@@ -21,7 +21,7 @@ func HandlerAddUser(w http.ResponseWriter, r *http.Request) {
 	var responseUserInfo model.ResponseUserInfo
 	err := json.NewDecoder(r.Body).Decode(&requestAddUser)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseUserInfo.Success = false
 		responseUserInfo.Message = "Invalid JSON format"
 		w.WriteHeader(http.StatusBadRequest)
@@ -29,14 +29,14 @@ func HandlerAddUser(w http.ResponseWriter, r *http.Request) {
 
 	_, mailErr := mail.ParseAddress(requestAddUser.User.UserEmail)
 	if mailErr != nil {
-		log.Fatal(mailErr)
+		log.Print(mailErr)
 		responseUserInfo.Success = false
 		responseUserInfo.Message = "Invalid email address"
 		w.WriteHeader(http.StatusBadRequest)
 	}
 
 	if requestAddUser.User.UserFullName == "" || requestAddUser.User.UserEmail == "" {
-		log.Fatal("User full name or email cannot be empty")
+		log.Print("User full name or email cannot be empty")
 		responseUserInfo.Success = false
 		responseUserInfo.Message = "User full name or email cannot be empty"
 		w.WriteHeader(http.StatusBadRequest)
@@ -44,7 +44,7 @@ func HandlerAddUser(w http.ResponseWriter, r *http.Request) {
 
 	responseUserInfo, erro := addUser(requestAddUser)
 	if erro != nil {
-		log.Fatal(erro)
+		log.Print(erro)
 		responseUserInfo.Success = false
 		responseUserInfo.Message = erro.Error()
 		w.WriteHeader(http.StatusInternalServerError)
@@ -60,7 +60,7 @@ func HandlerUserLogin(w http.ResponseWriter, r *http.Request) {
 	var responseUserInfo model.ResponseUserInfo
 	err := json.NewDecoder(r.Body).Decode(&requestLogin)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseUserInfo.Success = false
 		responseUserInfo.Message = "Invalid JSON format"
 		w.WriteHeader(http.StatusBadRequest)
@@ -68,7 +68,7 @@ func HandlerUserLogin(w http.ResponseWriter, r *http.Request) {
 
 	token, ex, err1 := auth.UserLogin(requestLogin)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 		responseUserInfo.Success = false
 		responseUserInfo.Message = err1.Error()
 	}
@@ -91,14 +91,14 @@ func HandlerUserRegister(w http.ResponseWriter, r *http.Request) {
 	var responseUserInfo model.ResponseUserInfo
 	err := json.NewDecoder(r.Body).Decode(&requestRegister)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseUserInfo.Success = false
 		responseUserInfo.Message = "Invalid JSON format"
 	}
 
 	token, ex, err1 := auth.UserSignup(requestRegister)
 	if err1 != nil {
-		log.Fatal(err1)
+		log.Print(err1)
 		responseUserInfo.Success = false
 		responseUserInfo.Message = err1.Error()
 	}
@@ -133,7 +133,7 @@ func HandlerGetUserOrders(w http.ResponseWriter, r *http.Request) {
 	var responseGetUserOrders model.ResponseOrderInfo
 	err := json.NewDecoder(r.Body).Decode(&requestGetUserOrders)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseGetUserOrders.Success = false
 		responseGetUserOrders.Message = "Invalid JSON format"
 	}
@@ -141,7 +141,7 @@ func HandlerGetUserOrders(w http.ResponseWriter, r *http.Request) {
 	responseGetUserOrders, err = getOrderInfo(requestGetUserOrders)
 
 	if err != nil {
-		log.Fatalf("Error while getting order info: %v", err)
+		log.Printf("Error while getting order info: %v", err)
 		responseGetUserOrders.Success = false
 		if err.Error() == sql.ErrNoRows.Error() {
 			responseGetUserOrders.Message = "No orders found"
@@ -165,7 +165,7 @@ func HandlerPlaceOrder(w http.ResponseWriter, r *http.Request) {
 	var responsePlaceOrder model.ResponseOrderInfo
 	err := json.NewDecoder(r.Body).Decode(&requestPlaceOrder)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responsePlaceOrder.Success = false
 		responsePlaceOrder.Message = "Invalid JSON format"
 	}
@@ -173,7 +173,7 @@ func HandlerPlaceOrder(w http.ResponseWriter, r *http.Request) {
 	responsePlaceOrder, err = addOrder(requestPlaceOrder)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responsePlaceOrder.Success = false
 		if err == sql.ErrNoRows {
 			responsePlaceOrder.Message = "No orders found"
@@ -197,7 +197,7 @@ func HandlerAddProduct(w http.ResponseWriter, r *http.Request) {
 	var responseAddProduct model.ResponseProductInfo
 	err := json.NewDecoder(r.Body).Decode(&requestAddProduct)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseAddProduct.Success = false
 		responseAddProduct.Message = "Invalid JSON format"
 	}
@@ -205,7 +205,7 @@ func HandlerAddProduct(w http.ResponseWriter, r *http.Request) {
 	responseAddProduct, err = addProduct(requestAddProduct)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseAddProduct.Success = false
 		if err == sql.ErrNoRows {
 			responseAddProduct.Message = "No products found"
@@ -227,7 +227,7 @@ func HandlerUpdateProduct(w http.ResponseWriter, r *http.Request) {
 	var responseUpdateProduct model.ResponseProductInfo
 	err := json.NewDecoder(r.Body).Decode(&requestUpdateProduct)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseUpdateProduct.Success = false
 		responseUpdateProduct.Message = "Invalid JSON format"
 	}
@@ -235,7 +235,7 @@ func HandlerUpdateProduct(w http.ResponseWriter, r *http.Request) {
 	responseUpdateProduct, err = updateProduct(requestUpdateProduct)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseUpdateProduct.Success = false
 		if err == sql.ErrNoRows {
 			responseUpdateProduct.Message = "No products found"
@@ -259,20 +259,21 @@ func HandlerProductInfo(w http.ResponseWriter, r *http.Request) {
 	var responseProductInfo model.ResponseProductInfo
 	err := json.NewDecoder(r.Body).Decode(&requestProductInfo)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		responseProductInfo.Success = false
 		responseProductInfo.Message = "Invalid JSON format"
 	}
 
-	responseProductInfo, err = getProductInfo(requestProductInfo)
+	responseProductInfo, err1 := getProductInfo(requestProductInfo)
 
-	if err != nil {
-		log.Fatal(err)
+	if err1 != nil {
+		log.Println("Error in get prod info")
+		log.Print(err1)
 		responseProductInfo.Success = false
 		if err == sql.ErrNoRows {
 			responseProductInfo.Message = "No products found"
 		} else {
-			responseProductInfo.Message = err.Error()
+			responseProductInfo.Message = err1.Error()
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 	} else {
@@ -290,7 +291,7 @@ func HandlerGetAllEvents(w http.ResponseWriter, r *http.Request) {
 	responseEventsInfo, err := getAllEvents()
 
 	if err != nil {
-		log.Fatalf("")
+		log.Printf("")
 		responseEventsInfo.Success = false
 		if err == sql.ErrNoRows {
 			responseEventsInfo.Message = "No events found"
